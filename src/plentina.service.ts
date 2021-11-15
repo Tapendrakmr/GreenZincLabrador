@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Circle } from './models/circle.model'
+import { Line } from './models/line.models'
 import { Rect } from './models/rect.model'
 import {
   CollideShapesRequest,
@@ -19,7 +20,7 @@ export class PlentinaService {
 
   doShapesCollide(request: CollideShapesRequest): CollideShapesResponse {
     let result = false;
-    if (request.firstShape.radius || request.secondShape.radius) {
+    if (request.firstShape.radius && request.secondShape.radius) {
       result = this.doesCircleAndCircleCollide(
         request.firstShape.x,
         request.firstShape.y,
@@ -29,7 +30,7 @@ export class PlentinaService {
         request.secondShape.radius,
       );
     } else if (
-      request.firstShape.radius ||
+      request.firstShape.radius  &&
       (request.secondShape.width && request.secondShape.height)
     ) {
       result = this.doesCircleAndRectCollide(
@@ -42,7 +43,7 @@ export class PlentinaService {
         request.secondShape.height,
       );
     } else if (
-      (request.firstShape.width && request.firstShape.height) ||
+      (request.firstShape.width && request.firstShape.height) &&
       request.secondShape.radius
     ) {
       result = this.doesCircleAndRectCollide(
@@ -55,7 +56,7 @@ export class PlentinaService {
         request.firstShape.height,
       );
     } else if (
-      (request.firstShape.width && request.firstShape.height) ||
+      (request.firstShape.width && request.firstShape.height) &&
       (request.secondShape.width && request.secondShape.height)
     ) {
       result = this.doesRectAndRectCollide(
@@ -68,7 +69,68 @@ export class PlentinaService {
         request.secondShape.width,
         request.secondShape.height,
       );
-    } else {
+    }
+    else if((request.firstShape.x2 && request.firstShape.y2)&& (request.secondShape.x2 && request.secondShape.y2)){
+       result =this.doesLineAndLineCollide(
+         request.firstShape.x,
+         request.firstShape.y,
+         request.firstShape.x2,
+         request.firstShape.y2,
+         request.secondShape.x,
+         request.secondShape.y,
+         request.secondShape.x2,
+         request.secondShape.y2,
+       )
+    }
+    else if((request.firstShape.x2 && request.firstShape.y2 )&&(request.secondShape.radius)){
+        result=this.doesLineAndCircleCollide(
+          request.firstShape.x,
+          request.firstShape.y,
+          request.firstShape.x2,
+          request.firstShape.y2,
+          request.secondShape.x,
+          request.secondShape.y,
+          request.secondShape.radius
+        )
+    }
+    else if((request.firstShape.radius && (request.secondShape.x2 && request.secondShape.y2))){
+        result=this.doesLineAndCircleCollide(
+          request.secondShape.x,
+          request.secondShape.y,
+          request.secondShape.x2,
+          request.secondShape.y2,
+          request.firstShape.x,
+          request.firstShape.y,
+          request.firstShape.radius
+        )
+ 
+    }
+    else if ((request.firstShape.x2 && request.firstShape.y2)&& (request.secondShape.width && request.secondShape.height)){
+      result=this.doesLineAndRectCollide(
+        request.firstShape.x,
+        request.firstShape.y,
+        request.firstShape.x2,
+        request.firstShape.y2,
+        request.secondShape.x,
+        request.secondShape.y,
+        request.secondShape.width,
+        request.secondShape.height
+      )
+    }
+
+    else if((request.firstShape.width && request.firstShape.height) &&(request.secondShape.x2 && request.secondShape.y2)){
+      result=this.doesLineAndRectCollide(
+        request.secondShape.x,
+        request.secondShape.y,
+        request.secondShape.x2,
+        request.secondShape.y2,
+        request.firstShape.x,
+        request.firstShape.y,
+        request.firstShape.width,
+        request.firstShape.height,
+      )
+    }
+    else {
       throw new Error('Invalid shapes!');
     }
 
@@ -79,6 +141,31 @@ export class PlentinaService {
     };
   }
 
+ /**
+   * Checks if a circle and another circle collide
+   * @param x1 x-coordinate of the circle
+   * @param y1 y-coordinate of the circle
+   * @param r1 radius of the circle
+   * @param x2 x-coordinate of the second circle
+   * @param y2 y-coordinate of the second circle
+   * @param r2 radius of the second circle
+   * @returns a boolean if they collide or not
+   */
+  doesCircleAndCircleCollide(
+    x1: number,
+    y1: number,
+    r1: number,
+    x2: number,
+    y2: number,
+    r2: number,
+  ): boolean {
+    console.log("Circle and Circle")
+
+    const circle1 = new Circle(x1, y1, r1);
+    const circle2 = new Circle(x2, y2, r2);
+
+    return circle1.collides(circle2);
+  }
   /**
    * Checks if a circle and a rectangle collide
    * @param x1 x-coordinate of the circle
@@ -99,35 +186,14 @@ export class PlentinaService {
     w: number,
     h: number,
   ): boolean {
+    console.log("Circle and RECT")
     const circle = new Circle(x1, y1, r);
     const rect = new Rect(x2, y2, w, h);
 
     return rect.collides(circle);
   }
 
-  /**
-   * Checks if a circle and another circle collide
-   * @param x1 x-coordinate of the circle
-   * @param y1 y-coordinate of the circle
-   * @param r1 radius of the circle
-   * @param x2 x-coordinate of the second circle
-   * @param y2 y-coordinate of the second circle
-   * @param r2 radius of the second circle
-   * @returns a boolean if they collide or not
-   */
-  doesCircleAndCircleCollide(
-    x1: number,
-    y1: number,
-    r1: number,
-    x2: number,
-    y2: number,
-    r2: number,
-  ): boolean {
-    const circle1 = new Circle(x1, y1, r1);
-    const circle2 = new Circle(x2, y2, r2);
-
-    return circle1.collides(circle2);
-  }
+ 
 
   /**
    * Checks if a rectangle and a second rectangle collide
@@ -151,9 +217,61 @@ export class PlentinaService {
     w2: number,
     h2: number,
   ): boolean {
+    console.log("RECT and Rect")
     const rect1 = new Rect(x1, y1, w1, h1);
     const rect2 = new Rect(x2, y2, w2, h2);
+    
+     return rect1.collides(rect2);
+  }
+  
+  doesLineAndLineCollide(
+   x1:number,
+   y1:number,
+   x2:number,
+   y2:number,
+   x3:number,
+   y3:number,
+   x4:number,
+   y4:number
 
-    return rect1.collides(rect2);
+  ):boolean{
+    console.log("Line and Line")
+    const line1 =new Line(x1,y1,x2,y2);
+    const line2=new Line(x3,y3,x4,y4);
+   
+    return line1.collides(line2)
+  }
+
+
+  doesLineAndCircleCollide(
+    x1:number,
+    y1:number,
+    x2:number,
+    y2:number,
+    x3:number,
+    y3:number,
+    r:number
+  ):boolean{
+    console.log("Line and circle")
+    const line =new Line(x1,y1,x2,y2);
+    const circle=new Circle(x3,y3,r)
+
+    return line.collides(circle)
+  }
+
+  doesLineAndRectCollide(
+    x1:number,
+    y1:number,
+    x2:number,
+    y2:number,
+    x3:number,
+    y3:number,
+    w:number,
+    h:number
+  ):boolean{
+    console.log("line and rect")
+    const line=new Line(x1,y1,x2,y2);
+    const rect=new Rect(x3,y3,w,h)
+    return line.collides(rect)
   }
 }
