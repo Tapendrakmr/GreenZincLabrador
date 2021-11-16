@@ -223,7 +223,18 @@ export class PlentinaService {
     
      return rect1.collides(rect2);
   }
-  
+  /**
+   * Checks if a Line and a second Line collide
+   * @param x1 first x-coordinate of the Line
+   * @param y1 first y-coordinate of the Line
+   * @param x2 second x-coordinate of the Line
+   * @param y2 second y-coordinate of the Line
+   * @param x3 first x-coordinate of the second Line
+   * @param y3 first y-coordinate of the second Line
+   * @param x4 second x-coordinate of the second Line
+   * @param y4 second y-coordinate of the second Line
+   * @returns a boolean if they collide or not
+   */
   doesLineAndLineCollide(
    x1:number,
    y1:number,
@@ -242,7 +253,17 @@ export class PlentinaService {
     return line1.collides(line2)
   }
 
-
+ /**
+   * Checks if a Line and a Circle collide
+   * @param x1 first x-coordinate of the Line
+   * @param y1 first y-coordinate of the Line
+   * @param x2 second x-coordinate of the Line
+   * @param y2 second y-coordinate of the Line
+   * @param x3  x-coordinate of the circle center
+   * @param y3  y-coordinate of the circle center
+   * @param r radius of the circle 
+   * @returns a boolean if they collide or not
+   */
   doesLineAndCircleCollide(
     x1:number,
     y1:number,
@@ -258,7 +279,18 @@ export class PlentinaService {
 
     return line.collides(circle)
   }
-
+/**
+   * Checks if a Line and a Rectangle collide
+   * @param x1 first x-coordinate of the Line
+   * @param y1 first y-coordinate of the Line
+   * @param x2 second x-coordinate of the Line
+   * @param y2 second y-coordinate of the Line
+   * @param x3  x-coordinate of the rect center
+   * @param y3  y-coordinate of the rect center
+   * @param w width of the rectangle
+   * @param h height of the rectangle
+   * @returns a boolean if they collide or not
+   */
   doesLineAndRectCollide(
     x1:number,
     y1:number,

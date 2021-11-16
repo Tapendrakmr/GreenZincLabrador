@@ -55,12 +55,12 @@ export class Rect implements Shape {
 
       case Type.RECT:
           const rectB=<Rect>(<any> other)
-          // if(this.center.x <rectB.center.x+rectB.width &&
-          //   this.center.x+this.width>rectB.center.x &&
-          //   this.center.y<rectB.center.y+ rectB.height &&
-          //   this.height+this.center.y>rectB.center.y){
-          //     return true;
-          //   }
+          if(this.center.x <rectB.center.x+rectB.width &&
+            this.center.x+this.width>rectB.center.x &&
+            this.center.y<rectB.center.y+ rectB.height &&
+            this.height+this.center.y>rectB.center.y){
+              return true;
+            }
             return false;
         default:
         throw new Error(`Invalid shape type!`);

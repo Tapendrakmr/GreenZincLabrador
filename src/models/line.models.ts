@@ -73,6 +73,16 @@ export class Line implements Shape{
 
     return new Line(polymorph.center.x, polymorph.center.y,polymorph.p,polymorph.k);
   }
+   /**
+   * Checks if a point (endpoint) and a Circle collide
+   * @param px x-coordinate of the endpoint
+   * @param py y-coordinate of the enpoint
+   * @param cx x-coordinate of the center of circle
+   * @param cy xy-coordinate of the center of circle
+   * @param cr radius of circle
+  
+   * @returns a boolean if they collide or not
+   */
   pointCircle(px:number,py:number,cx:number,cy:number,cr:number){
     const distx=px-cx;
     const disty=py-cy;
@@ -82,6 +92,17 @@ export class Line implements Shape{
     }
     return false
   }
+  /**
+   * Checks if a point lie on the Line 
+   * @param x1 first x-coordinate of the Line
+   * @param y1 first y-coordinate of the Line
+   * @param x2 second x-coordinate of the Line
+   * @param y2 second y-coordinate of the Line
+   * @param px x-coordinate of the point
+   * @param py y-coordinate of the point
+ 
+   * @returns a boolean if they lie or not
+   */
   linePoint(x1:number,y1:number,x2:number,y2:number,px:number,py:number){
     const d1=this.distanceBetweenPoint(px,py,x1,y1)
     const d2=this.distanceBetweenPoint(px,py,x2,y2)
@@ -96,7 +117,18 @@ export class Line implements Shape{
       Math.pow(x1-x2,2)+Math.pow(y1-y2,2)
     )
   }
-
+  /**
+   * Checks if a Line and a second Line collide
+   * @param x1 first x-coordinate of the Line
+   * @param y1 first y-coordinate of the Line
+   * @param x2 second x-coordinate of the Line
+   * @param y2 second y-coordinate of the Line
+   * @param x3 first x-coordinate of the second Line
+   * @param y3 first y-coordinate of the second Line
+   * @param x4 second x-coordinate of the second Line
+   * @param y4 second y-coordinate of the second Line
+   * @returns a boolean if they collide or not
+   */
   lineLineInteraction(x1:number,y1:number,x2:number,y2:number,x3:number,y3:number,x4:number,y4:number){
     const uA=((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
     const uB=((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
