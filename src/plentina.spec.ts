@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { Circle } from './models/circle.model'
+import { Line } from './models/line.models'
 import { Rect } from './models/rect.model'
 import { PlentinaController } from './plentina.controller'
 import { PlentinaService } from './plentina.service'
@@ -99,4 +100,63 @@ describe('PlentinaService', () => {
       });
     });
   });
+// Line and line
+  describe('doesLineAndLineCollide', () => {
+    const line1 = new Line(3, 3, 10, 10);
+
+    describe('two colliding Lines', () => {
+      const line2 = new Line(3, 7, 9, 4);
+      it('should return true', () => {
+        expect(line1.collides(line2)).toBeTruthy;
+      });
+    });
+
+    describe('two non-colliding Lines', () => {
+      const line2 = new Line(5, 5, 10, 10);
+      it('should return false', () => {
+        expect(line1.collides(line2)).toBeFalsy;
+      });
+    });
+  });
+
+  // Line and circle
+  describe('doesLineAndCircleCollide', () => {
+    const line=new Line(5,5,10,10);
+
+    describe('a colliding line and rectangle', () => {
+      const circle1 = new Circle(3, 3, 5);
+      it('should return true', () => {
+        expect(line.collides(circle1)).toBeTruthy;
+      });
+    });
+
+    describe('two non-colliding rectangles', () => {
+      const circle2 = new Circle(-5, -5,5);
+      it('should return false', () => {
+        expect(line.collides(circle2)).toBeFalsy;
+      });
+    });
+  });
+
+// line and Rectangle
+describe('doesRectAndRectCollide', () => {
+  const line=new Line(5,5,10,10);
+
+  describe('a colliding Line and rectangle', () => {
+    
+    const rectangle = new Rect(5,5,5,5);
+    it('should return true', () => {
+      expect(line.collides(rectangle)).toBeTruthy;
+    });
+  });
+
+  describe(' non-colliding Line and rectangle', () => {
+    const rectangle2 = new Rect(-5,-5,5,5);
+    it('should return false', () => {
+      expect(line.collides(rectangle2)).toBeFalsy;
+    });
+  });
+});
+
+  
 });
